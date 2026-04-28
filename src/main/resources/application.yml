@@ -1,0 +1,78 @@
+server:
+  port: 9191
+
+spring:
+  datasource:
+    url: jdbc:postgresql://${BALTIC_SHIPYARD_INVENTORY_SERVICE_DB_HOST}:${BALTIC_SHIPYARD_INVENTORY_SERVICE_DB_PORT}/${BALTIC_SHIPYARD_INVENTORY_SERVICE_DB_NAME}
+    username: ${BALTIC_SHIPYARD_INVENTORY_SERVICE_DB_USER}
+    password: ${BALTIC_SHIPYARD_INVENTORY_SERVICE_DB_PASSWORD}
+    driverClassName: org.postgresql.Driver
+  rabbitmq:
+    host: ${BALTIC_SHIPYARD_INVENTORY_SERVICE_RABBITMQ_HOST}
+    port: ${BALTIC_SHIPYARD_INVENTORY_SERVICE_RABBITMQ_PORT}
+    username: ${BALTIC_SHIPYARD_INVENTORY_SERVICE_RABBITMQ_USER}
+    password: ${BALTIC_SHIPYARD_INVENTORY_SERVICE_RABBITMQ_PASSWORD}
+
+
+application:
+  endpoint_v1:
+    root: api/v1/
+  rabbitmq:
+    exchange:
+      measured-remainders_direct: ${RABBIT_EXCHANGE_MEASURED-REMAINDERS_DIRECT}
+      warehouse-transfer_direct: ${RABBIT_EXCHANGE_WAREHOUSE-TRANSFER_DIRECT}
+      inventory_direct: ${RABBIT_EXCHANGE_INVENTORY_DIRECT}
+      item_direct: ${RABBIT_EXCHANGE_ITEM_DIRECT}
+      lot_direct: ${RABBIT_EXCHANGE_LOT_DIRECT}
+      warehouse_direct: ${RABBIT_EXCHANGE_WAREHOUSE_DIRECT}
+      container_direct: ${RABBIT_EXCHANGE_CONTAINER_DIRECT}
+      barcode_direct: ${RABBIT_EXCHANGE_BARCODE_DIRECT}
+      mechanicalpart_direct: ${RABBIT_EXCHANGE_MECHANICALPART_DIRECT}
+    queue:
+      find_measured-remainders: ${RABBIT_QUEUE_FIND_MEASURED-REMAINDERS}
+      update_measured-remainder: ${RABBIT_QUEUE_MEASURED-REMAINDER}
+      inventory_measured-remainders: ${RABBIT_QUEUE_INVENTORY_MEASURED-REMAINDERS}
+      transfer_by_bins: ${RABBIT_QUEUE_TRANSFER_BY_BINS}
+      response_to_update_measured-remainder: ${RABBIT_QUEUE_RESPONSE_TO_UPDATE_MEASURED-REMAINDER}
+      response_to_inventory_measured-remainders: ${RABBIT_QUEUE_RESPONSE_TO_INVENTORY_MEASURED-REMAINDERS}
+      response_to_transfer_by_bins: ${RABBIT_QUEUE_RESPONSE_TO_TRANSFER_BY_BINS}
+      find_stock_list: ${RABBIT_QUEUE_FIND_STOCK_LIST}
+      get_item_detail: ${RABBIT_QUEUE_GET_ITEM_DETAIL}
+      get_lot_detail: ${RABBIT_QUEUE_GET_LOT_DETAILPLACEMENT}
+      get_warehouse_detail: ${RABBIT_QUEUE_GET_WAREHOUSE_DETAIL}
+      get_location_detail: ${RABBIT_QUEUE_GET_LOCATION_DETAIL}
+      get_container: ${RABBIT_QUEUE_GET_CONTAINER}
+      find_containers: ${RABBIT_QUEUE_FIND_CONTAINERS}
+      find_barcode_data: ${RABBIT_QUEUE_FIND_BARCODE_DATA}
+      placement_container: ${RABBIT_QUEUE_PLACEMENT_CONTAINER}
+      response_to_placement_container: ${RABBIT_QUEUE_RESPONSE_TO_PLACEMENT_CONTAINER}
+      report_operation: ${RABBIT_QUEUE_REPORT_OPERATION}
+    key:
+      find_measured-remainders: ${RABBIT_KEY_FIND_MEASURED-REMAINDERS}
+      update_measured-remainder: ${RABBIT_KEY_UPDATE_MEASURED-REMAINDER}
+      inventory_measured-remainders: ${RABBIT_KEY_INVENTORY_MEASURED-REMAINDERS}
+      transfer_by_bins: ${RABBIT_KEY_TRANSFER_BY_BINS}
+      response_to_transfer_by_bins: ${RABBIT_KEY_RESPONSE_TO_TRANSFER_BY_BINS}
+      find_stock_list: ${RABBIT_KEY_FIND_STOCK_LIST}
+      get_item_detail: ${RABBIT_KEY_GET_ITEM_DETAIL}
+      get_lot_detail: ${RABBIT_KEY_GET_LOT_DETAIL}
+      get_warehouse_detail: ${RABBIT_KEY_GET_WAREHOUSE_DETAIL}
+      get_location_detail: ${RABBIT_KEY_GET_LOCATION_DETAIL}
+      get_container: ${RABBIT_KEY_GET_CONTAINER}
+      find_containers: ${RABBIT_KEY_FIND_CONTAINERS}
+      find_barcode_data: ${RABBIT_KEY_FIND_BARCODE_DATA}
+      placement_container: ${RABBIT_KEY_PLACEMENT_CONTAINER}
+      response_to_placement_container: ${RABBIT_KEY_RESPONSE_TO_PLACEMENT_CONTAINER}
+      report_operation: ${RABBIT_KEY_REPORT_OPERATION}
+  token:
+    signing:
+      key: ${BALTIC_SHIPYARD_INVENTORY_SERVICE_JWT_KEY}
+
+springdoc:
+  pre-loading-locales: en,ru
+  api-docs:
+    enabled: true
+    resolve-schema-properties: true
+  swagger-ui:
+    path: /docs
+

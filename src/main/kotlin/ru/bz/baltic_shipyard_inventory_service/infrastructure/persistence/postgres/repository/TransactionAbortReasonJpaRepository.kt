@@ -1,0 +1,8 @@
+package ru.bz.baltic_shipyard_inventory_service.infrastructure.persistence.postgres.repository
+
+import org.springframework.data.jpa.repository.JpaRepository
+import ru.bz.baltic_shipyard_inventory_service.infrastructure.persistence.postgres.entity.transaction.TransactionAbortReasonEntity
+
+
+interface TransactionAbortReasonJpaRepository: JpaRepository<TransactionAbortReasonEntity, Long> {
+}
