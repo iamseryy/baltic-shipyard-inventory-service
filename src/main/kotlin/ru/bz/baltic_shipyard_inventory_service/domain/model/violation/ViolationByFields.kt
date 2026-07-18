@@ -1,6 +1,6 @@
 package ru.bz.baltic_shipyard_inventory_service.domain.model.violation
 
-import java.time.LocalDateTime
+import ru.bz.baltic_shipyard_inventory_service.common.errors.abortreason.Violation
 
 
 data class ViolationByFields(

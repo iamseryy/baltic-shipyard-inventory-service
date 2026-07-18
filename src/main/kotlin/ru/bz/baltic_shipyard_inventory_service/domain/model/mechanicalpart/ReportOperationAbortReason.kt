@@ -1,6 +1,6 @@
 package ru.bz.baltic_shipyard_inventory_service.domain.model.mechanicalpart
 
-import ru.bz.baltic_shipyard_inventory_service.domain.model.violation.AbortReason
+import ru.bz.baltic_shipyard_inventory_service.common.errors.abortreason.AbortReason
 import java.time.LocalDateTime
 
 

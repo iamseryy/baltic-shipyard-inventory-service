@@ -12,7 +12,7 @@ import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
-import ru.bz.baltic_shipyard_inventory_service.domain.usecases.mechanicalpart.MechanicalpartUseCases
+import ru.bz.baltic_shipyard_inventory_service.applications.usecases.mechanicalpart.MechanicalpartUseCases
 import ru.bz.baltic_shipyard_inventory_service.infrastructure.configuration.security.JwtService
 import ru.bz.baltic_shipyard_inventory_service.presentation.controller.ResponseCodes
 import ru.bz.baltic_shipyard_inventory_service.presentation.dto.mechanicalpart.ReportedOperationDto

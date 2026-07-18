@@ -6,7 +6,7 @@ import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
 import ru.bz.baltic_shipyard_inventory_service.domain.model.filter.SearchTransactionFilter
 import ru.bz.baltic_shipyard_inventory_service.domain.model.transaction.Transaction
-import ru.bz.baltic_shipyard_inventory_service.domain.model.violation.AbortReason
+import ru.bz.baltic_shipyard_inventory_service.common.errors.abortreason.AbortReason
 import ru.bz.baltic_shipyard_inventory_service.infrastructure.persistence.postgres.dto.abortreason.toAbortReasonDbDto
 import ru.bz.baltic_shipyard_inventory_service.infrastructure.persistence.postgres.entity.transaction.TransactionAbortReasonEntity
 import ru.bz.baltic_shipyard_inventory_service.infrastructure.persistence.postgres.entity.transaction.TransactionEntity

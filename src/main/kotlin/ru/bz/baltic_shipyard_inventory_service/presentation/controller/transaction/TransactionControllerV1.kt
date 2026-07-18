@@ -3,7 +3,7 @@ package ru.bz.baltic_shipyard_inventory_service.presentation.controller.transact
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import ru.bz.baltic_shipyard_inventory_service.presentation.dto.transaction.toTransactionDto
-import ru.bz.baltic_shipyard_inventory_service.domain.usecases.transaction.TransactionUseCases
+import ru.bz.baltic_shipyard_inventory_service.applications.usecases.transaction.TransactionUseCases
 
 
 @Validated

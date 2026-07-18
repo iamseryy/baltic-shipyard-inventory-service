@@ -5,7 +5,6 @@ import jakarta.servlet.FilterChain
 import jakarta.servlet.ServletException
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import org.springframework.lang.NonNull
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
@@ -21,14 +20,10 @@ class JwtAuthenticationFilter(
 
     @Throws(ServletException::class, IOException::class, ExpiredJwtException::class)
     override fun doFilterInternal(
-        @NonNull request: HttpServletRequest,
-        @NonNull response: HttpServletResponse,
-        @NonNull filterChain: FilterChain
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        filterChain: FilterChain
     ) {
-        // �������� ����� �� ���������
-
-
-
         val token = jwtService.getTokenWithoutBearer(request)
         if (token == null) {
             filterChain.doFilter(request, response)
@@ -37,16 +32,14 @@ class JwtAuthenticationFilter(
 
         val username = jwtService.extractUsername(token)
 
-
         if (username.isNotEmpty() && SecurityContextHolder.getContext().authentication == null) {
-            // ���� ����� �������, �� ��������������� ������������
             if (jwtService.verifyToken(token)) {
                 val context = SecurityContextHolder.createEmptyContext()
 
                 val authToken = UsernamePasswordAuthenticationToken(
                     username,
                     null,
-                    null,
+                    emptyList(),
                 )
 
                 authToken.details = WebAuthenticationDetailsSource().buildDetails(request)
@@ -55,6 +48,5 @@ class JwtAuthenticationFilter(
             }
         }
         filterChain.doFilter(request, response)
-
     }
 }

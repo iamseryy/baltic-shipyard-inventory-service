@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import ru.bz.baltic_shipyard_inventory_service.presentation.controller.ResponseCodes
 import ru.bz.baltic_shipyard_inventory_service.presentation.dto.violation.ViolationDto
-import ru.bz.baltic_shipyard_inventory_service.domain.usecases.barcode.BarCodeUseCases
+import ru.bz.baltic_shipyard_inventory_service.applications.usecases.barcode.BarCodeUseCases
 
 
 @Validated

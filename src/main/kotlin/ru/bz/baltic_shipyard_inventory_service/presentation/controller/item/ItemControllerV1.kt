@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*
 import ru.bz.baltic_shipyard_inventory_service.presentation.controller.ResponseCodes
 import ru.bz.baltic_shipyard_inventory_service.presentation.dto.item.ItemDto
 import ru.bz.baltic_shipyard_inventory_service.presentation.dto.item.toItemDto
-import ru.bz.baltic_shipyard_inventory_service.domain.usecases.item.ItemUseCases
+import ru.bz.baltic_shipyard_inventory_service.applications.usecases.warehouse.item.ItemUseCases
 
 
 @Validated

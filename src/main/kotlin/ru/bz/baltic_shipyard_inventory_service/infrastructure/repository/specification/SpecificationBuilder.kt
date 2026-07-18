@@ -11,22 +11,26 @@ import org.springframework.data.jpa.domain.Specification
  * @author Sergei Perminov
  * @version 1.0
  */
-class SpecificationBuilder <T> (
-    private val anySpecification: (SearchCriteria<Comparable<Any>>) -> Specification<T>
+class SpecificationBuilder<T : Any>(
+    private val specificationFactory: (SearchCriteria<*>) -> Specification<T>
 ) {
-    private val parameters: MutableList<SearchCriteria<Comparable<Any>>> = mutableListOf()
+    private val parameters: MutableList<SearchCriteria<*>> = mutableListOf()
 
-    fun with(key: String, operation: SearchOperation, value: Comparable<Any>?): SpecificationBuilder<T> {
-        if(value != null) parameters.add(SearchCriteria(key, operation, value))
+    fun with(key: String, operation: SearchOperation, value: Comparable<*>?): SpecificationBuilder<T> {
+        if (value != null) {
+            parameters.add(SearchCriteria(key, operation, value))
+        }
         return this
     }
 
-  fun build(): Specification <T>? {
-        if(parameters.isEmpty()) return null
+    fun build(): Specification<T>? {
+        if (parameters.isEmpty()) return null
 
-        var specification: Specification<T> = anySpecification(parameters[0])
+        var specification: Specification<T> = specificationFactory(parameters[0])
 
-        parameters.drop(1).forEach{ specification = Specification.where(specification).and(anySpecification(it)) }
+        parameters.drop(1).forEach {
+            specification = Specification.where(specification).and(specificationFactory(it))
+        }
 
         return specification
     }

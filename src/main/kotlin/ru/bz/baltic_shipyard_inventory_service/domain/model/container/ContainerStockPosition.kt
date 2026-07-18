@@ -1,8 +1,8 @@
 package ru.bz.baltic_shipyard_inventory_service.domain.model.container
 
-import ru.bz.baltic_shipyard_inventory_service.domain.model.item.Item
-import ru.bz.baltic_shipyard_inventory_service.domain.model.order.WarehouseOrder
-import ru.bz.baltic_shipyard_inventory_service.domain.model.warehouse.Location
+import ru.bz.baltic_shipyard_inventory_service.domain.model.entity.item.Item
+import ru.bz.baltic_shipyard_inventory_service.domain.model.entity.order.WarehouseOrder
+import ru.bz.baltic_shipyard_inventory_service.domain.model.entity.location.Location
 
 
 data class ContainerStockPosition(

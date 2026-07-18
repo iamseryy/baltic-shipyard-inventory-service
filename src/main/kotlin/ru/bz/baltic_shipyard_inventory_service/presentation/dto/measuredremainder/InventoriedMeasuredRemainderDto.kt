@@ -71,15 +71,3 @@ data class InventoriedMeasuredRemainderDto (
     @JsonProperty(JsonFields.WIDTH)
     val width: Double? = null
 )
-
-fun InventoriedMeasuredRemainderDto.toInventoriedMeasuredRemainderValidationErrorResponse(
-    abortReasonDto: AbortReasonDto<InventoriedMeasuredRemainderViolationByFieldDto>
-) = InventoriedMeasuredRemainderValidationErrorResponse(
-    id = id,
-    sequence = sequence,
-    status = status,
-    comment = comment,
-    length = length,
-    width = width,
-    abortReason = abortReasonDto
-)

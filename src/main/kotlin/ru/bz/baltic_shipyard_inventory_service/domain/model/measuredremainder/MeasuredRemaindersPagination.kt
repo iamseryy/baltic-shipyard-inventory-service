@@ -1,5 +1,7 @@
 package ru.bz.baltic_shipyard_inventory_service.domain.model.measuredremainder
 
+import ru.bz.baltic_shipyard_inventory_service.domain.model.entity.measuredremainder.MeasuredRemainder
+
 data class MeasuredRemaindersPagination(
     val measuredRemainders: List<MeasuredRemainder>,
     val page: Int,

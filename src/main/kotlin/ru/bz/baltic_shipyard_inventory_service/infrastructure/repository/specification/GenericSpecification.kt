@@ -16,17 +16,24 @@ import org.springframework.data.jpa.domain.Specification
  * @version 1.0
  */
 
-class GenericSpecification  <T, V: Comparable<V>> (
-    private val criteria: SearchCriteria<V>
-): Specification<T> {
+class GenericSpecification<T : Any>(
+    private val criteria: SearchCriteria<*>
+) : Specification<T> {
+
+    @Suppress("UNCHECKED_CAST")
     override fun toPredicate(
         root: Root<T>,
         query: CriteriaQuery<*>,
         builder: CriteriaBuilder
-    ): Predicate? = when (criteria.operation) {
-        SearchOperation.EQUAL_TO -> builder.equal(root.get<Any>(criteria.key), criteria.value)
-        SearchOperation.GREATER_THAN_OR_EQUAL_TO -> builder.greaterThanOrEqualTo(root.get(criteria.key), criteria.value)
-        SearchOperation.LESS_THAN_OR_EQUAL_TO -> builder.lessThanOrEqualTo(root.get(criteria.key), criteria.value)
-        else -> null
+    ): Predicate? {
+        val path = root.get<Comparable<Any>>(criteria.key)
+        val value = criteria.value as Comparable<Any>
+
+        return when (criteria.operation) {
+            SearchOperation.EQUAL_TO -> builder.equal(path, value)
+            SearchOperation.GREATER_THAN_OR_EQUAL_TO -> builder.greaterThanOrEqualTo(path, value)
+            SearchOperation.LESS_THAN_OR_EQUAL_TO -> builder.lessThanOrEqualTo(path, value)
+            else -> builder.conjunction()
+        }
     }
 }

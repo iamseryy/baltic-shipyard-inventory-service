@@ -1,0 +1,13 @@
+package ru.bz.baltic_shipyard_inventory_service.applications.usecases.warehouse.lot
+
+import org.springframework.stereotype.Service
+import ru.bz.baltic_shipyard_inventory_service.domain.model.filter.SearchLotDetailShotFilter
+import ru.bz.baltic_shipyard_inventory_service.domain.model.lot.LotDetail
+import ru.bz.baltic_shipyard_inventory_service.domain.repository.WarehouseRepository
+
+@Service
+class GetLotDetailByShotFilterUseCase(
+    private val warehouseRepository: WarehouseRepository
+) {
+    operator fun invoke(filter: SearchLotDetailShotFilter): LotDetail? = warehouseRepository.getLotDetail(filter)
+}

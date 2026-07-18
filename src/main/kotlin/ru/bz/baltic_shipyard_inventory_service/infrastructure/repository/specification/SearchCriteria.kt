@@ -4,8 +4,8 @@ package ru.bz.baltic_shipyard_inventory_service.infrastructure.repository.specif
 /**
  * @version
  */
-data class SearchCriteria <T: Comparable<T>> (
+data class SearchCriteria<V>(
     val key: String,
     val operation: SearchOperation,
-    val value: T
+    val value: V
 )

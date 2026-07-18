@@ -8,7 +8,7 @@ import ru.bz.baltic_shipyard_inventory_service.presentation.dto.violation.Violat
 import ru.bz.baltic_shipyard_inventory_service.presentation.dto.violation.toViolationDto
 import ru.bz.baltic_shipyard_inventory_service.presentation.dto.violation.transfer.TransferItemByLocationsViolationByFieldDto
 import ru.bz.baltic_shipyard_inventory_service.presentation.dto.violation.transfer.toTransferItemByLocationsViolationByFieldDto
-import ru.bz.baltic_shipyard_inventory_service.domain.model.violation.AbortReason
+import ru.bz.baltic_shipyard_inventory_service.common.errors.abortreason.AbortReason
 
 
 @Schema(description="schema.abortreasondto.desc")

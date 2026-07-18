@@ -11,42 +11,32 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
+import ru.bz.baltic_shipyard_inventory_service.applications.usecases.measuredremainder.MeasuredRemainderUseCases
+import ru.bz.baltic_shipyard_inventory_service.applications.usecases.transaction.TransactionUseCases
+import ru.bz.baltic_shipyard_inventory_service.domain.common.Result
+import ru.bz.baltic_shipyard_inventory_service.domain.model.entity.measuredremainder.MeasuredRemainder
 import ru.bz.baltic_shipyard_inventory_service.infrastructure.configuration.security.JwtService
 import ru.bz.baltic_shipyard_inventory_service.presentation.controller.ResponseCodes
-import ru.bz.baltic_shipyard_inventory_service.presentation.dto.filter.SearchMeasuredRemainderFilterDto
-import ru.bz.baltic_shipyard_inventory_service.presentation.dto.filter.SearchTransactionFilterDto
-import ru.bz.baltic_shipyard_inventory_service.presentation.dto.filter.toSearchMeasuredRemainderFilter
-import ru.bz.baltic_shipyard_inventory_service.presentation.dto.filter.toSearchTransactionFilter
-import ru.bz.baltic_shipyard_inventory_service.presentation.dto.transaction.measuredremainder.TransactionsOfUpdatableMeasuredRemaindersPaginationDto
-import ru.bz.baltic_shipyard_inventory_service.presentation.dto.transaction.measuredremainder.toTransactionsOfUpdatableMeasuredRemaindersPaginationDto
-import ru.bz.baltic_shipyard_inventory_service.domain.usecases.measuredremainder.MeasuredRemainderUseCases
-import ru.bz.baltic_shipyard_inventory_service.domain.usecases.transaction.TransactionUseCases
-import ru.bz.baltic_shipyard_inventory_service.presentation.dto.measuredremainder.InventoriedMeasuredRemaindersDto
-import ru.bz.baltic_shipyard_inventory_service.presentation.dto.measuredremainder.InventoriedMeasuredRemaindersValidationErrorResponse
-import ru.bz.baltic_shipyard_inventory_service.presentation.dto.measuredremainder.MeasuredRemainderDto
-import ru.bz.baltic_shipyard_inventory_service.presentation.dto.measuredremainder.MeasuredRemainderForUpdateDto
-import ru.bz.baltic_shipyard_inventory_service.presentation.dto.measuredremainder.MeasuredRemainderForUpdateValidationErrorResponse
-import ru.bz.baltic_shipyard_inventory_service.presentation.dto.measuredremainder.MeasuredRemaindersPaginationDto
-import ru.bz.baltic_shipyard_inventory_service.presentation.dto.measuredremainder.SearchMeasuredRemainderFilterValidationErrorResponse
-import ru.bz.baltic_shipyard_inventory_service.presentation.dto.measuredremainder.mergeWith
-import ru.bz.baltic_shipyard_inventory_service.presentation.dto.measuredremainder.toMeasuredRemainderDto
-import ru.bz.baltic_shipyard_inventory_service.presentation.dto.measuredremainder.toMeasuredRemaindersPaginationDto
-import ru.bz.baltic_shipyard_inventory_service.presentation.dto.transaction.SearchTransactionFilterValidationErrorResponse
-import ru.bz.baltic_shipyard_inventory_service.presentation.dto.transaction.TransactionDto
-import ru.bz.baltic_shipyard_inventory_service.presentation.dto.transaction.toTransactionDto
-import ru.bz.baltic_shipyard_inventory_service.presentation.dto.transaction.toTransactionOfUpdatableMeasuredRemaindersDto
+import ru.bz.baltic_shipyard_inventory_service.presentation.dto.abortreason.toAbortReasonDto
+import ru.bz.baltic_shipyard_inventory_service.presentation.dto.measuredremainder.*
+import ru.bz.baltic_shipyard_inventory_service.presentation.dto.measuredremainder.filter.MeasuredRemainderFilterDto
+import ru.bz.baltic_shipyard_inventory_service.presentation.dto.measuredremainder.filter.toDomainPageRequest
+import ru.bz.baltic_shipyard_inventory_service.presentation.dto.measuredremainder.filter.toMeasuredRemainderFilter
+import ru.bz.baltic_shipyard_inventory_service.presentation.dto.measuredremainder.validation.MeasuredRemainderFilterValidationResponse
+import ru.bz.baltic_shipyard_inventory_service.presentation.dto.measuredremainder.validation.MeasuredRemainderUpdateValidationResponse
+import ru.bz.baltic_shipyard_inventory_service.presentation.dto.measuredremainder.validation.toMeasuredRemainderUpdateAbortReasonDto
 
 
 @Validated
 @RestController
-@RequestMapping("\${application.endpoint_v1.root}")
+@RequestMapping("\${application.endpoint_v1.root}", "api/v2")
 @Tag(
     name="springdoc.controllerdefinition.measuredremainder.name",
     description="springdoc.controllerdefinition.measuredremainder.desc"
 )
 class MeasuredRemainderControllerV1(
     private val transactionUseCases: TransactionUseCases,
-    private val measuredRemainderUseCases: MeasuredRemainderUseCases,
+    private val useCases: MeasuredRemainderUseCases,
     private val jwtService: JwtService
 ) {
     @GetMapping("/measured-remainders/{id}")
@@ -77,21 +67,20 @@ class MeasuredRemainderControllerV1(
             )
         ]
     )
-    fun findMeasuredRemainderById(
-        @Parameter(
-            description="springdoc.operationdefinition.measuredremainder.findbyid.param.desc",
+    fun getById(
+        @PathVariable @Parameter(
+            description="springdoc.operationdefinition.measuredremainder.findbycode.param.desc",
             required = true,
             example = "R202011040000000009"
-        )
-        @PathVariable("id") id: String
-    ) = measuredRemainderUseCases.findById(id).toMeasuredRemainderDto()
+        ) id: String
+    ): MeasuredRemainderDto = useCases.getById(id).toMeasuredRemainderDto()
 
 
-    @PostMapping("/search/measured-remainders")
+    @PostMapping("/measured-remainders")
     @SecurityRequirement(name = "JWT")
     @Operation(
-        summary="springdoc.operationdefinition.measuredremainder.find.summary",
-        description="springdoc.operationdefinition.measuredremainder.find.desc",
+        summary="springdoc.operationdefinition.measuredremainder.search.summary",
+        description="springdoc.operationdefinition.measuredremainder.search.desc",
         parameters = [
             Parameter(
                 `in` = ParameterIn.HEADER,
@@ -106,7 +95,7 @@ class MeasuredRemainderControllerV1(
                 content = arrayOf(
                     Content(
                         mediaType = "application/json",
-                        schema = Schema(implementation = MeasuredRemaindersPaginationDto::class)
+                        schema = Schema(implementation = MeasuredRemaindersPageResponseDto::class)
                     )
                 )
             ),
@@ -116,60 +105,23 @@ class MeasuredRemainderControllerV1(
                 content = arrayOf(
                     Content(
                         mediaType = "application/json",
-                        schema = Schema(implementation = SearchMeasuredRemainderFilterValidationErrorResponse::class)
+                        schema = Schema(implementation = MeasuredRemainderFilterValidationResponse::class)
                     )
                 )
             )
         ]
     )
-    fun findMeasuredRemaindersByFilter(
-        @Valid @RequestBody filter: SearchMeasuredRemainderFilterDto
-    ): MeasuredRemaindersPaginationDto = filter.toSearchMeasuredRemainderFilter().let { searchMeasuredRemainderFilter ->
-        measuredRemainderUseCases.findByFilter(searchMeasuredRemainderFilter)
-    }.toMeasuredRemaindersPaginationDto()
+    fun search(
+        @Valid @RequestBody filterDto: MeasuredRemainderFilterDto
+    ): MeasuredRemaindersPageResponseDto =
+        useCases.search(
+            filter = filterDto.toMeasuredRemainderFilter(),
+            pageRequest = filterDto.toDomainPageRequest()
+        ).toMeasuredRemaindersPageResponseDto()
 
 
-    @PostMapping("/search/measured-remainders/filter/check")
-    @SecurityRequirement(name = "JWT")
-    @Operation(
-        summary="springdoc.operationdefinition.validatemeasureremainderfindfilter.summary",
-        description="springdoc.operationdefinition.validatemeasureremainderfindfilter.desc",
-        parameters = [
-            Parameter(
-                `in` = ParameterIn.HEADER,
-                name = "Accept-Language",
-                schema = Schema(type = "string", allowableValues = ["en", "ru"], defaultValue = "en"),
-                example = "ru"
-            )],
-        responses = [
-            ApiResponse(
-                description = ResponseCodes.RESPONSE_CODE_200_DESC,
-                responseCode = ResponseCodes.RESPONSE_CODE_200,
-                content = arrayOf(
-                    Content(
-                        mediaType = "application/json",
-                        schema = Schema(implementation = SearchMeasuredRemainderFilterDto::class)
-                    )
-                )
-            ),
-            ApiResponse(
-                description = ResponseCodes.RESPONSE_CODE_400_DESC,
-                responseCode = ResponseCodes.RESPONSE_CODE_400,
-                content = arrayOf(
-                    Content(
-                        mediaType = "application/json",
-                        schema = Schema(implementation = SearchMeasuredRemainderFilterValidationErrorResponse::class)
-                    )
-                )
-            )
-        ]
-    )
-    fun validateMeasuredRemainderSearchFilter(
-        @Valid @RequestBody filter: SearchMeasuredRemainderFilterDto
-    ) = filter
 
-
-    @PostMapping("/measured-remainders/update")
+    @PatchMapping("/measured-remainders/{id}")
     @SecurityRequirement(name = "JWT")
     @Operation(
         summary="springdoc.operationdefinition.updatemeasuredremainder.summary",
@@ -188,7 +140,7 @@ class MeasuredRemainderControllerV1(
                 content = arrayOf(
                     Content(
                         mediaType = "application/json",
-                        schema = Schema(implementation = TransactionDto::class)
+                        schema = Schema(implementation = MeasuredRemainderDto::class)
                     )
                 )
             ),
@@ -198,28 +150,42 @@ class MeasuredRemainderControllerV1(
                 content = arrayOf(
                     Content(
                         mediaType = "application/json",
-                        schema = Schema(implementation = MeasuredRemainderForUpdateValidationErrorResponse::class)
+                        schema = Schema(implementation = MeasuredRemainderUpdateValidationResponse::class)
                     )
                 )
             )
         ]
     )
-    fun updateMeasuredRemainder(
+    fun update(
         @RequestHeader("Authorization") token: String,
-        @Valid @RequestBody measuredRemainderForUpdateDto: MeasuredRemainderForUpdateDto
-    ) = measuredRemainderUseCases.findById(measuredRemainderForUpdateDto.id)
-        .let {
-            measuredRemainderForUpdateDto.mergeWith(it, jwtService.extractUsername(token.substringAfterLast(" ")))
-        }.let {
-            measuredRemainderUseCases.saveForUpdate(it)
-        }.toTransactionDto()
-
+        @PathVariable @Parameter(
+            description="springdoc.operationdefinition.measuredremainder.findbycode.param.desc",
+            required = true,
+            example = "R202011040000000009"
+        ) id: String,
+        @Valid @RequestBody updateDto: MeasuredRemainderUpdateDto
+    ) = jwtService.extractUsername(token.substringAfterLast(" ")).let { jwtUser ->
+        useCases.update(
+            id = id,
+            command = updateDto.toUpdateMeasuredRemainderCommand(id),
+            userLogin = jwtUser
+        ).let { result ->
+            when (result) {
+                is Result.Success -> result.data.toMeasuredRemainderDto()
+                is Result.Failure -> MeasuredRemainderUpdateValidationResponse(
+                    id = id,
+                    updateDto = updateDto,
+                    abortReasonDto = result.toMeasuredRemainderUpdateAbortReasonDto()
+                )
+            }
+        }
+    }
 
     @PostMapping("/measured-remainders/inventory")
     @SecurityRequirement(name = "JWT")
     @Operation(
-        summary="springdoc.operationdefinition.inventorymeasuredremainder.summary",
-        description="springdoc.operationdefinition.inventorymeasuredremainder.desc",
+        summary="springdoc.operationdefinition.updatemeasuredremainder.summary",
+        description="springdoc.operationdefinition.updatemeasuredremainder.desc",
         parameters = [
             Parameter(
                 `in` = ParameterIn.HEADER,
@@ -234,7 +200,7 @@ class MeasuredRemainderControllerV1(
                 content = arrayOf(
                     Content(
                         mediaType = "application/json",
-                        schema = Schema(implementation = TransactionDto::class)
+                        schema = Schema(implementation = MeasuredRemainderInventoryDto::class)
                     )
                 )
             ),
@@ -244,102 +210,26 @@ class MeasuredRemainderControllerV1(
                 content = arrayOf(
                     Content(
                         mediaType = "application/json",
-                        schema = Schema(implementation = InventoriedMeasuredRemaindersValidationErrorResponse::class)
+                        schema = Schema(implementation = MeasuredRemainderUpdateValidationResponse::class)
                     )
                 )
             )
         ]
     )
-    fun inventoryMeasuredRemainders(
+    fun inventory(
         @RequestHeader("Authorization") token: String,
-        @Valid @RequestBody inventoriedMeasuredRemaindersDto: InventoriedMeasuredRemaindersDto
-    ) = inventoriedMeasuredRemaindersDto.measuredRemainders.map { measuredRemainderUseCases.findById(it.id) }
-        .let {
-            inventoriedMeasuredRemaindersDto.mergeWith(it)
-        }.let {
-            measuredRemainderUseCases.saveForInventory(it)
-        }.transaction.toTransactionDto()
-
-
-    @GetMapping("/measured-remainders/transaction/{id}")
-    @SecurityRequirement(name = "JWT")
-    @Operation(
-        summary="springdoc.operationdefinition.transaction.findbyid.summary",
-        description="springdoc.operationdefinition.transaction.findbyid.desc",
-        responses = [
-            ApiResponse(
-                description = ResponseCodes.RESPONSE_CODE_200_DESC,
-                responseCode = ResponseCodes.RESPONSE_CODE_200,
-                content = arrayOf(
-                    Content(
-                        mediaType = "application/json",
-                        schema = Schema(implementation = TransactionDto::class)
-                    )
-                )
-            ),
-            ApiResponse(
-                description = ResponseCodes.RESPONSE_CODE_400_DESC,
-                responseCode = ResponseCodes.RESPONSE_CODE_400,
-                content = arrayOf(Content(schema = Schema(hidden = true)))
-            ),
-            ApiResponse(
-                responseCode = ResponseCodes.RESPONSE_CODE_404,
-                description = ResponseCodes.RESPONSE_CODE_404_DESC,
-                content = arrayOf(Content(schema = Schema(hidden = true)))
-            )
-        ]
-    )
-    fun findMeasuredRemaindersTransactionByTransactionId(
-        @Parameter(
-            description="springdoc.operationdefinition.transaction.findbyid.param.desc",
-            required = true,
-            example = "10"
-        )
-        @PathVariable("id") id: Int
-    ) = transactionUseCases.findById(id)
-        .toTransactionDto()
-        .toTransactionOfUpdatableMeasuredRemaindersDto(
-            measuredRemainderUseCases.findUpdatableMeasuredRemaindersByTransactionId(id)
-        )
-
-    @PostMapping("/measured-remainders/search/transactions")
-    @SecurityRequirement(name = "JWT")
-    @Operation(
-        summary="springdoc.operationdefinition.measuredremainders.transactions.find.summary",
-        description="springdoc.operationdefinition.measuredremainder.transactions.find.desc",
-        parameters = [
-            Parameter(
-                `in` = ParameterIn.HEADER,
-                name = "Accept-Language",
-                schema = Schema(type = "string", allowableValues = ["en", "ru"], defaultValue = "en"),
-                example = "ru"
-            )],
-        responses = [
-            ApiResponse(
-                description = ResponseCodes.RESPONSE_CODE_200_DESC,
-                responseCode = ResponseCodes.RESPONSE_CODE_200,
-                content = arrayOf(
-                    Content(
-                        mediaType = "application/json",
-                        schema = Schema(implementation = TransactionsOfUpdatableMeasuredRemaindersPaginationDto::class)
-                    )
-                )
-            ),
-            ApiResponse(
-                description = ResponseCodes.RESPONSE_CODE_400_DESC,
-                responseCode = ResponseCodes.RESPONSE_CODE_400,
-                content = arrayOf(
-                    Content(
-                        mediaType = "application/json",
-                        schema = Schema(implementation = SearchTransactionFilterValidationErrorResponse::class)
-                    )
-                )
-            )
-        ]
-    )
-    fun findTransactionsOfMeasuredRemaindersByFilterPagination(
-        @Valid @RequestBody filter: SearchTransactionFilterDto
-    ) = filter.toSearchTransactionFilter().let { searchTransactionFilter ->
-        transactionUseCases.findTransactionsOfMeasuredRemaindersByFilterPagination(searchTransactionFilter)
-    }.toTransactionsOfUpdatableMeasuredRemaindersPaginationDto()
+        @Valid @RequestBody inventoryDto: MeasuredRemainderInventoryDto
+    ) = jwtService.extractUsername(token.substringAfterLast(" ")).let { jwtUser ->
+        useCases.inventory(
+            command = inventoryDto.toInventoryMeasuredRemainderCommand(),
+            userLogin = jwtUser
+        ).let { results ->
+            results.map { result ->
+                when (result) {
+                    is Result.Success<MeasuredRemainder> -> result.data.toMeasuredRemainderDto()
+                    is Result.Failure -> result.abortReason.toAbortReasonDto()
+                }
+            }
+        }
+    }
 }

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import jakarta.persistence.*
 import org.hibernate.annotations.JdbcTypeCode
 import org.hibernate.type.SqlTypes
-import ru.bz.baltic_shipyard_inventory_service.domain.model.violation.AbortReason
+import ru.bz.baltic_shipyard_inventory_service.common.errors.abortreason.AbortReason
 import ru.bz.baltic_shipyard_inventory_service.infrastructure.persistence.postgres.dto.abortreason.AbortReasonDbDto
 import ru.bz.baltic_shipyard_inventory_service.infrastructure.persistence.postgres.dto.abortreason.toAbortReasonDbDto
 import ru.bz.baltic_shipyard_inventory_service.infrastructure.persistence.postgres.dto.violation.toViolation

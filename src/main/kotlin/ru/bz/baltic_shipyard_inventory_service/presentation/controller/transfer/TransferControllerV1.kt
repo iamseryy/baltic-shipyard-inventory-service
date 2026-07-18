@@ -13,6 +13,7 @@ import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
+import ru.bz.baltic_shipyard_inventory_service.applications.usecases.warehouse.transfer.TransferUseCases
 import ru.bz.baltic_shipyard_inventory_service.infrastructure.configuration.security.JwtService
 import ru.bz.baltic_shipyard_inventory_service.presentation.controller.ResponseCodes
 import ru.bz.baltic_shipyard_inventory_service.presentation.dto.transaction.TransactionDto
@@ -24,8 +25,6 @@ import ru.bz.baltic_shipyard_inventory_service.presentation.dto.transfer.Transfe
 import ru.bz.baltic_shipyard_inventory_service.presentation.dto.transfer.toTransferItemByLocations
 import ru.bz.baltic_shipyard_inventory_service.presentation.dto.transfer.toTransferredItemByLocationsDto
 import ru.bz.baltic_shipyard_inventory_service.presentation.dto.violation.ViolationDto
-import ru.bz.baltic_shipyard_inventory_service.domain.usecases.transfer.TransferUseCases
-import ru.bz.baltic_shipyard_inventory_service.domain.usecases.validation.ValidationUseCases
 
 
 @Validated
@@ -37,8 +36,7 @@ import ru.bz.baltic_shipyard_inventory_service.domain.usecases.validation.Valida
 )
 class TransferControllerV1 (
     private val transferUseCases: TransferUseCases,
-    private val jwtService: JwtService,
-    private val validationUseCases: ValidationUseCases
+    private val jwtService: JwtService
 ){
     @PostMapping("/warehouse/transfer/from_location_to_location")
     @SecurityRequirement(name = "JWT")
@@ -82,7 +80,7 @@ class TransferControllerV1 (
         .let {userName ->
             transferItemByLocationsDto.toTransferItemByLocations(userName)
         }.let {transferItemByLocations ->
-            with(validationUseCases.validateTransferItemByLocation(transferItemByLocations)){
+            with(transferUseCases.validateTransferItemByLocation(transferItemByLocations)){
                 if(abortReason != null) ResponseEntity.status(400).body(this.toTransferredItemByLocationsDto())
                 else transferUseCases.transferItemByLocations(transferItemByLocations).toTransactionDto()
             }

@@ -2,10 +2,13 @@ package ru.bz.baltic_shipyard_inventory_service.presentation.dto.measuredremaind
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.Schema
-import ru.bz.baltic_shipyard_inventory_service.presentation.dto.JsonFields
-import ru.bz.baltic_shipyard_inventory_service.domain.model.measuredremainder.MeasuredRemainder
-import ru.bz.baltic_shipyard_inventory_service.domain.model.measuredremainder.MeasuredRemainderBase
+import ru.bz.baltic_shipyard_inventory_service.domain.model.command.measuredremainder.UpdateMeasuredRemainderCommand
+import ru.bz.baltic_shipyard_inventory_service.domain.model.entity.measuredremainder.MeasuredRemainder
+import ru.bz.baltic_shipyard_inventory_service.domain.model.entity.measuredremainder.MeasuredRemainderLocation
 import ru.bz.baltic_shipyard_inventory_service.domain.model.measuredremainder.MeasuredRemainderStatus
+import ru.bz.baltic_shipyard_inventory_service.presentation.dto.JsonFields
+import ru.bz.baltic_shipyard_inventory_service.presentation.dto.location.LocationDto
+import ru.bz.baltic_shipyard_inventory_service.presentation.dto.location.toLocationDto
 
 
 @Schema(description="schema.measuredremainderdto.desc")
@@ -15,97 +18,91 @@ data class MeasuredRemainderDto (
         example = "R202011040000000009"
     )
     @JsonProperty(JsonFields.ID)
-    override val measuredRemainderId: String,
+    val id: String,
 
     @Schema(
-        description="schema.measuredremainder.remainder.desc",
+        description="schema.code.desc",
         example="251-3214"
     )
-    @JsonProperty(JsonFields.REMAINDER)
-    override val remainder: String,
+    @JsonProperty(JsonFields.CODE)
+    val code: String,
 
     @Schema(
         description="schema.project.desc",
         example="057120"
     )
-    @JsonProperty(JsonFields.PROJECT)
-    override val project: String,
+    @JsonProperty(JsonFields.PROJECT_CODE)
+    val projectCode: String,
 
     @Schema(
         description="schema.measuredremainder.material.desc",
         example="\u0421\u04423\u0441\u043f2"
     )
     @JsonProperty(JsonFields.MATERIAL)
-    override val material: String,
+    val material: String,
 
     @Schema(
-        description="schema.warehouse.desc",
-        example="R0200"
-    )
-    @JsonProperty(JsonFields.WAREHOUSE)
-    override val warehouse: String,
-
-    @Schema(
-        description="schema.location.desc",
-        example="01"
+        description="schema.location.desc"
     )
     @JsonProperty(JsonFields.LOCATION)
-    override val location: String,
+    val location: LocationDto,
 
     @Schema(
         description="schema.measuredremainder.sequence.desc",
         example="10"
     )
     @JsonProperty(JsonFields.SEQUENCE)
-    override val sequence: Int,
+    val sequence: Int,
 
     @Schema(
         description="schema.measuredremainder.status.desc",
         example="4"
     )
     @JsonProperty(JsonFields.STATUS)
-    override val status: MeasuredRemainderStatus,
+    val status: MeasuredRemainderStatus,
 
     @Schema(
         description="schema.measuredremainder.comment.desc",
         example="\u0441/\u0437 \u2116 12-3877 \u043e\u0442 18.11.2020"
     )
     @JsonProperty(JsonFields.COMMENT)
-    override val comment: String,
+    val comment: String,
 
     @Schema(
-        description="schema.measuredremainder.length.desc",
-        example="22.2"
+        description="schema.dimensions.desc"
     )
-    @JsonProperty(JsonFields.LENGTH)
-    override val length: Double,
+    @JsonProperty(JsonFields.DIMENSIONS)
+    val dimensions: MeasuredRemainderDimensionsDto,
 
-    @Schema(
-        description="schema.measuredremainder.width.desc",
-        example="30"
-    )
-    @JsonProperty(JsonFields.WIDTH)
-    override val width: Double,
-
-    @Schema(
-        description="schema.measuredremainder.depth.desc",
-        example="15"
-    )
-    @JsonProperty(JsonFields.DEPTH)
-    override val depth: Double
-): MeasuredRemainderBase
+//    @Schema(
+//        description="schema.dimensions.desc"
+//    )
+//    @JsonProperty(JsonFields.INVENTORY_DATE)
+//    val inventoryDate: LocalDateTime
+)
 
 fun MeasuredRemainder.toMeasuredRemainderDto() = MeasuredRemainderDto(
-    measuredRemainderId = measuredRemainderId,
-    remainder = remainder,
-    project = project,
+    id = id,
+    code = code,
+    projectCode = projectCode,
     material = material,
-    warehouse = warehouse,
-    location = location,
-    sequence = sequence,
+    location = location.toLocationDto(),
+    sequence = location.sequence,
     status = status,
     comment = comment,
-    length = length,
-    width = width,
-    depth = depth
+    dimensions = dimensions.toMeasuredRemainderDimensionsDto()
+    //inventoryDate = inventoryDate
+)
+
+fun MeasuredRemainderDto.toUpdateMeasuredRemainderCommand() = UpdateMeasuredRemainderCommand(
+    id = id,
+    location = MeasuredRemainderLocation(
+        warehouseCode = location.warehouseCode,
+        binCode = location.binCode,
+        sequence = sequence),
+    material = material,
+    status = status,
+    comment = comment,
+    dimensions = dimensions.toUpdateMeasuredRemainderDimensionsCommand()
+    //inventoryDate = inventoryDate
 )

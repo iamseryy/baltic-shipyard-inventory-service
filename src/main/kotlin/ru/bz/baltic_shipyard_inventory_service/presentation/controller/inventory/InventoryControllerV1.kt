@@ -22,7 +22,7 @@ import ru.bz.baltic_shipyard_inventory_service.presentation.dto.inventory.Search
 import ru.bz.baltic_shipyard_inventory_service.presentation.dto.inventory.SearchInventoryBalanceFilterValidationErrorResponse
 import ru.bz.baltic_shipyard_inventory_service.presentation.dto.inventory.StockListPaginationDto
 import ru.bz.baltic_shipyard_inventory_service.presentation.dto.inventory.toStockListPaginationDto
-import ru.bz.baltic_shipyard_inventory_service.domain.usecases.inventory.InventoryUseCases
+import ru.bz.baltic_shipyard_inventory_service.applications.usecases.warehouse.stock.InventoryUseCases
 
 
 @Validated

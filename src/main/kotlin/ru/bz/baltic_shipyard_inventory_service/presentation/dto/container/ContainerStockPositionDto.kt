@@ -11,9 +11,9 @@ import ru.bz.baltic_shipyard_inventory_service.presentation.dto.item.toItemDto
 import ru.bz.baltic_shipyard_inventory_service.presentation.dto.order.WarehouseOrderDto
 import ru.bz.baltic_shipyard_inventory_service.presentation.dto.order.toWarehouseOrder
 import ru.bz.baltic_shipyard_inventory_service.presentation.dto.order.toWarehouseOrderDto
-import ru.bz.baltic_shipyard_inventory_service.presentation.dto.warehouse.LocationDto
-import ru.bz.baltic_shipyard_inventory_service.presentation.dto.warehouse.toLocation
-import ru.bz.baltic_shipyard_inventory_service.presentation.dto.warehouse.toLocationDto
+import ru.bz.baltic_shipyard_inventory_service.presentation.dto.location.LocationDto
+import ru.bz.baltic_shipyard_inventory_service.presentation.dto.location.toLocation
+import ru.bz.baltic_shipyard_inventory_service.presentation.dto.location.toLocationDto
 import ru.bz.baltic_shipyard_inventory_service.domain.model.container.ContainerStockPosition
 
 

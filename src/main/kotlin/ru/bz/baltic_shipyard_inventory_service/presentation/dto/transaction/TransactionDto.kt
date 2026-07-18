@@ -2,15 +2,13 @@ package ru.bz.baltic_shipyard_inventory_service.presentation.dto.transaction
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.Schema
-import ru.bz.baltic_shipyard_inventory_service.presentation.dto.JsonFields
-import ru.bz.baltic_shipyard_inventory_service.presentation.dto.measuredremainder.toUpdatableMeasuredRemainderDto
-import ru.bz.baltic_shipyard_inventory_service.presentation.dto.transaction.measuredremainder.TransactionOfUpdatableMeasuredRemaindersDto
 import ru.bz.baltic_shipyard_inventory_service.domain.model.container.PlacedContainer
 import ru.bz.baltic_shipyard_inventory_service.domain.model.measuredremainder.UpdatableMeasuredRemainder
 import ru.bz.baltic_shipyard_inventory_service.domain.model.transaction.Transaction
 import ru.bz.baltic_shipyard_inventory_service.domain.model.transaction.TransactionBase
 import ru.bz.baltic_shipyard_inventory_service.domain.model.transaction.TransactionStatus
 import ru.bz.baltic_shipyard_inventory_service.domain.model.transfer.TransferredItemByLocations
+import ru.bz.baltic_shipyard_inventory_service.presentation.dto.JsonFields
 import java.time.LocalDateTime
 
 
@@ -62,14 +60,14 @@ fun Transaction.toTransactionDto() = TransactionDto(
     userLogin = userLogin
 )
 
-fun TransactionDto.toTransactionOfUpdatableMeasuredRemaindersDto(updatableMeasuredRemainders: List<UpdatableMeasuredRemainder>) =
-    TransactionOfUpdatableMeasuredRemaindersDto(
-        id = id,
-        created = created,
-        status = status,
-        userLogin = userLogin,
-        measuredRemainders = updatableMeasuredRemainders.map { it.toUpdatableMeasuredRemainderDto() }
-    )
+//fun TransactionDto.toTransactionOfUpdatableMeasuredRemaindersDto(updatableMeasuredRemainders: List<UpdatableMeasuredRemainder>) =
+//    TransactionOfUpdatableMeasuredRemaindersDto(
+//        id = id,
+//        created = created,
+//        status = status,
+//        userLogin = userLogin,
+//        measuredRemainders = updatableMeasuredRemainders.map { it.toUpdatableMeasuredRemainderDto() }
+//    )
 
 fun TransferredItemByLocations.toTransactionDto() = TransactionDto(
     id = transaction.id,

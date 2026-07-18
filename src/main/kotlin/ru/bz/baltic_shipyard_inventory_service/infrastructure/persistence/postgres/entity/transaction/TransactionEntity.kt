@@ -15,21 +15,21 @@ import java.time.LocalDateTime
 data class TransactionEntity(
     @field:Id
     @field:GeneratedValue(strategy = GenerationType.IDENTITY)
-    override val id: Int = 0,
+    val id: Int = 0,
 
     @Enumerated(EnumType.STRING)
     @field:Column(name = EntityFields.STATUS, nullable = false)
-    override val status: TransactionStatus = TransactionStatus.RUNNING,
+    val status: TransactionStatus = TransactionStatus.RUNNING,
 
 
     @field:Column(name = EntityFields.USER_LOGIN, nullable = false)
-    override val userLogin: String,
-    ): TransactionBase
+    val userLogin: String,
+    )
 {
     @CreatedDate
     @CreationTimestamp
     @Column(updatable = false, nullable = false)
-    override lateinit var created: LocalDateTime
+    lateinit var created: LocalDateTime
 
     constructor(id: Int, status: TransactionStatus, userLogin: String, created: LocalDateTime): this(id, status, userLogin) {
         this.created = created

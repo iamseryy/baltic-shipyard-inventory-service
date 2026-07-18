@@ -1,10 +1,9 @@
---liquibase formatted sql
+--liquibase formatted SQL
 
-
---changeset SergeiPerminov:create-schema
---comment create new schema
-CREATE SCHEMA inventory_service;
---rollback drop schema baltic_shipyard_inventory_service;
+--changeset SergeiPerminov:create-schema runOnChange:false failOnError:true
+--comment Create schema for inventory service
+CREATE SCHEMA IF NOT EXISTS inventory_service;
+--rollback DROP SCHEMA IF EXISTS inventory_service CASCADE;
 
 
 --changeset SergeiPerminov:create-transactions-table
@@ -27,30 +26,6 @@ CREATE TABLE inventory_service.transaction_abortreason
     abort_reason            JSONB
 );
 --rollback drop table transaction_abortreason;
-
-
-
---changeset SergeiPerminov:create-updatable_measuredremainder-table
---comment create updatable_measuredremainder table
-CREATE TABLE inventory_service.updatable_measuredremainder
-(
-    id                      BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    measuredremainder_id    TEXT                        NOT NULL,
-    remainder               TEXT                        NOT NULL,
-    project                 TEXT                        NOT NULL,
-    material                TEXT                        NOT NULL,
-    warehouse               TEXT                        NOT NULL,
-    location                TEXT                        NOT NULL,
-    sequence                INT                         NOT NULL,
-    status                  TEXT                        NOT NULL,
-    comment                 TEXT                        NOT NULL,
-    length                  DOUBLE PRECISION            NOT NULL,
-    width                   DOUBLE PRECISION            NOT NULL,
-    depth                   DOUBLE PRECISION            NOT NULL,
-    transaction_id          BIGINT REFERENCES inventory_service.transactions(id),
-    abortreason_id          BIGINT REFERENCES inventory_service.transaction_abortreason(id)
-);
---rollback drop table updatable_measuredremainder;
 
 --changeset SergeiPerminov:create-transfer_by_locations-table
 --comment create transfer_by_locations table
@@ -78,6 +53,6 @@ CREATE TABLE inventory_service.placement_container
     transaction_id          BIGINT REFERENCES inventory_service.transactions(id),
     abortreason_id          BIGINT REFERENCES inventory_service.transaction_abortreason(id)
 );
---rollback drop table transfer_by_locations;
+--rollback drop table placement_container;
 
 

@@ -7,9 +7,9 @@ import ru.bz.baltic_shipyard_inventory_service.domain.model.container.Container
 import ru.bz.baltic_shipyard_inventory_service.domain.model.container.ContainerStatus
 import ru.bz.baltic_shipyard_inventory_service.domain.model.container.ContainerStock
 import ru.bz.baltic_shipyard_inventory_service.presentation.dto.JsonFields
-import ru.bz.baltic_shipyard_inventory_service.presentation.dto.warehouse.LocationDto
-import ru.bz.baltic_shipyard_inventory_service.presentation.dto.warehouse.toLocation
-import ru.bz.baltic_shipyard_inventory_service.presentation.dto.warehouse.toLocationDto
+import ru.bz.baltic_shipyard_inventory_service.presentation.dto.location.LocationDto
+import ru.bz.baltic_shipyard_inventory_service.presentation.dto.location.toLocation
+import ru.bz.baltic_shipyard_inventory_service.presentation.dto.location.toLocationDto
 import java.time.LocalDateTime
 
 
