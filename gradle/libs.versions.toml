@@ -3,7 +3,6 @@
 springdoc = "3.0.3"
 jjwt = "0.13.0"
 postgresql = "42.7.11"
-liquibase = "5.0.3"
 kotlin-logging = "3.0.5"
 logstash-encoder = "9.0"
 testcontainers = "1.21.4"
@@ -29,7 +28,7 @@ junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher
 
 # Database
 postgresql = { module = "org.postgresql:postgresql", version.ref = "postgresql" }
-liquibase-core = { module = "org.liquibase:liquibase-core", version.ref = "liquibase" }
+spring-boot-starter-liquibase = { module = "org.springframework.boot:spring-boot-starter-liquibase" }
 
 # JWT
 jjwt-api = { module = "io.jsonwebtoken:jjwt-api", version.ref = "jjwt" }

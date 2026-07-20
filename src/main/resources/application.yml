@@ -16,6 +16,8 @@ spring:
     password: ${BALTIC_SHIPYARD_INVENTORY_SERVICE_RABBITMQ_PASSWORD}
   liquibase:
     enabled: true
+    default-schema: inventory_service
+    liquibase-schema: inventory_service_liquibase_tracking
     changelog: classpath:db/changelog/db.changelog-master.yaml
   jpa:
     hibernate:
@@ -29,6 +31,9 @@ logging:
     org.springframework.amqp: WARN
     org.springframework.amqp.rabbit.core.RabbitTemplate: WARN
     org.hibernate.SQL: WARN
+    liquibase: DEBUG          # <-- добавьте эту строку
+    org.springframework.boot.autoconfigure.liquibase: DEBUG
+    org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration: DEBUG
 
 # Actuator
 management:

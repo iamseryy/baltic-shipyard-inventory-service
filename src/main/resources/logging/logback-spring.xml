@@ -31,6 +31,23 @@
         </encoder>
     </appender>
 
+
+<!--    &lt;!&ndash; Отдельный текстовый аппендер для отладки Liquibase &ndash;&gt;-->
+<!--    <appender name="TEXT_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">-->
+<!--        <encoder>-->
+<!--            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>-->
+<!--        </encoder>-->
+<!--    </appender>-->
+
+<!--    &lt;!&ndash; Логгеры для Liquibase – выводят DEBUG в текстовый аппендер &ndash;&gt;-->
+<!--    <logger name="liquibase" level="DEBUG" additivity="false">-->
+<!--        <appender-ref ref="TEXT_CONSOLE"/>-->
+<!--    </logger>-->
+<!--    <logger name="org.springframework.boot.autoconfigure.liquibase" level="DEBUG" additivity="false">-->
+<!--        <appender-ref ref="TEXT_CONSOLE"/>-->
+<!--    </logger>-->
+
+
     <springProfile name="local, dev, default">
         <root level="INFO">
             <appender-ref ref="JSON_CONSOLE"/>

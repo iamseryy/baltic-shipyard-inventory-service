@@ -39,7 +39,7 @@ dependencies {
 
     // DATABASE
     implementation(libs.postgresql)
-    implementation(libs.liquibase.core)
+    implementation(libs.spring.boot.starter.liquibase)
 
     // JWT
     implementation(libs.bundles.jjwt)
