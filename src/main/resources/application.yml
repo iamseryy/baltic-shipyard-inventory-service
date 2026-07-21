@@ -31,9 +31,6 @@ logging:
     org.springframework.amqp: WARN
     org.springframework.amqp.rabbit.core.RabbitTemplate: WARN
     org.hibernate.SQL: WARN
-    liquibase: DEBUG          # <-- добавьте эту строку
-    org.springframework.boot.autoconfigure.liquibase: DEBUG
-    org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration: DEBUG
 
 # Actuator
 management:
@@ -80,6 +77,7 @@ application:
       find_measured_remainders: ${RABBIT_QUEUE_FIND_MEASURED_REMAINDERS}
       update_measured_remainder: ${RABBIT_QUEUE_UPDATE_MEASURED_REMAINDER}
       inventory_measured_remainders: ${RABBIT_QUEUE_INVENTORY_MEASURED_REMAINDERS}
+      find_bin_codes_of_measured_remainders: ${RABBIT_QUEUE_FIND_BIN_CODES_OF_MEASURED_REMAINDERS}
       transfer_by_bins: ${RABBIT_QUEUE_TRANSFER_BY_BINS}
       response_to_transfer_by_bins: ${RABBIT_QUEUE_RESPONSE_TO_TRANSFER_BY_BINS}
       find_stock_list: ${RABBIT_QUEUE_FIND_STOCK_LIST}
@@ -97,6 +95,7 @@ application:
       find_measured_remainders: ${RABBIT_KEY_FIND_MEASURED_REMAINDERS}
       update_measured_remainder: ${RABBIT_KEY_UPDATE_MEASURED_REMAINDER}
       inventory_measured_remainders: ${RABBIT_KEY_INVENTORY_MEASURED_REMAINDERS}
+      find_bin_codes_of_measured_remainders: ${RABBIT_KEY_FIND_BIN_CODES_OF_MEASURED_REMAINDERS}
       transfer_by_bins: ${RABBIT_KEY_TRANSFER_BY_BINS}
       response_to_transfer_by_bins: ${RABBIT_KEY_RESPONSE_TO_TRANSFER_BY_BINS}
       find_stock_list: ${RABBIT_KEY_FIND_STOCK_LIST}

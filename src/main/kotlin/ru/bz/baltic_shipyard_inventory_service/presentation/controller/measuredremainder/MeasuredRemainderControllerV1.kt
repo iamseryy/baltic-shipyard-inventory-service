@@ -69,7 +69,7 @@ class MeasuredRemainderControllerV1(
     )
     fun getById(
         @PathVariable @Parameter(
-            description="springdoc.operationdefinition.measuredremainder.findbycode.param.desc",
+            description="springdoc.operationdefinition.measuredremainder.findbyid.param.desc",
             required = true,
             example = "R202011040000000009"
         ) id: String
@@ -232,4 +232,41 @@ class MeasuredRemainderControllerV1(
             }
         }
     }
+
+    @GetMapping("/measured-remainders/bin-codes")
+    @SecurityRequirement(name = "JWT")
+    @Operation(
+        summary="springdoc.operationdefinition.getbincodesbywarehousecode.summary",
+        description="springdoc.operationdefinition.getbincodesbywarehousecode.desc",
+        responses = [
+            ApiResponse(
+                description = ResponseCodes.RESPONSE_CODE_200_DESC,
+                responseCode = ResponseCodes.RESPONSE_CODE_200,
+                content = [
+                    Content(
+                        mediaType = "application/json",
+                        schema = Schema(implementation = Array<String>::class)
+                    )
+                ]
+            ),
+            ApiResponse(
+                description = ResponseCodes.RESPONSE_CODE_400_DESC,
+                responseCode = ResponseCodes.RESPONSE_CODE_400,
+                content = [Content(schema = Schema(hidden = true))]
+            ),
+            ApiResponse(
+                responseCode = ResponseCodes.RESPONSE_CODE_404_DESC,
+                description = ResponseCodes.RESPONSE_CODE_404,
+                content = arrayOf(Content(schema = Schema(hidden = true)))
+            )
+        ]
+    )
+    fun getBinCodesByWarehouseCode(
+        @RequestParam @Parameter(
+            description = "springdoc.operationdefinition.measuredremainder.getBinCodesByWarehouseCode.param.desc",
+            required = true,
+            example = "R0200"
+        ) warehouseCode: String
+    ): List<String> = useCases.getBinCodesByWarehouseCode(warehouseCode)
+
 }

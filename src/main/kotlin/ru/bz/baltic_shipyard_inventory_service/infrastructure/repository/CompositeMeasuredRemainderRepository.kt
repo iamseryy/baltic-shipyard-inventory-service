@@ -27,4 +27,8 @@ class CompositeMeasuredRemainderRepository(
 
     override fun update(measuredRemainder: MeasuredRemainder, userLogin: String): Result<MeasuredRemainder> =
         rabbitOutbound.update(measuredRemainder, userLogin)
+
+    override fun findBinCodesByWarehouseCode(warehouseCode: String): List<String>? =
+        rabbitOutbound.findBinCodesByWarehouseCode(warehouseCode)
+
 }

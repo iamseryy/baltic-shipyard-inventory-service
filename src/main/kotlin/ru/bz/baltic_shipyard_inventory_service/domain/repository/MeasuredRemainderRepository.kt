@@ -13,4 +13,5 @@ interface MeasuredRemainderRepository {
     fun findPage(filter: MeasuredRemainderFilter, pageRequest: DomainPageRequest): DomainPage<MeasuredRemainder>?
     fun findById(id: String): MeasuredRemainder?
     fun update(measuredRemainder: MeasuredRemainder, userLogin: String): Result<MeasuredRemainder>
+    fun findBinCodesByWarehouseCode(warehouseCode: String): List<String>?
 }

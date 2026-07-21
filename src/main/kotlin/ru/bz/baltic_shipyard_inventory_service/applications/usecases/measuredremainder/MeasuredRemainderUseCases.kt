@@ -8,5 +8,6 @@ data class MeasuredRemainderUseCases(
     val search: SearchMeasuredRemaindersUseCase,
     val getById: GetMeasuredRemainderByIdUseCase,
     val update: UpdateMeasuredRemainderUseCase,
-    val inventory: InventoryMeasuredRemainderUseCase
+    val inventory: InventoryMeasuredRemainderUseCase,
+    val getBinCodesByWarehouseCode: GetBinCodesByWarehouseCodeUseCase
 )

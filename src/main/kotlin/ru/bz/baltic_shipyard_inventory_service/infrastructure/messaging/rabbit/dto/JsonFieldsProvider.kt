@@ -21,6 +21,7 @@ object JsonFieldsProvider {
     const val LOCATION = "location"
     const val BIN = "bin"
     const val BIN_CODE = "bin_code"
+    const val BIN_CODES = "bin_codes"
     const val BIN_DESC = "bin_desc"
     const val BIN_CODE_TARGET = "bin_code_target"
     const val BIN_CODE_SOURCE = "bin_code_source"

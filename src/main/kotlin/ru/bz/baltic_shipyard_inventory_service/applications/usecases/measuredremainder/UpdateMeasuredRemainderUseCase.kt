@@ -1,6 +1,7 @@
 package ru.bz.baltic_shipyard_inventory_service.applications.usecases.measuredremainder
 
 import org.springframework.stereotype.Component
+import org.springframework.stereotype.Service
 import ru.bz.baltic_shipyard_inventory_service.common.errors.ResourceNotFoundException
 import ru.bz.baltic_shipyard_inventory_service.domain.common.Result
 import ru.bz.baltic_shipyard_inventory_service.domain.model.entity.measuredremainder.MeasuredRemainder
@@ -8,7 +9,7 @@ import ru.bz.baltic_shipyard_inventory_service.domain.model.command.measuredrema
 import ru.bz.baltic_shipyard_inventory_service.domain.repository.MeasuredRemainderRepository
 
 
-@Component
+@Service
 class UpdateMeasuredRemainderUseCase(
     private val repository: MeasuredRemainderRepository
 ) {

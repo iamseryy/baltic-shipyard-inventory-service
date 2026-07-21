@@ -12,4 +12,5 @@ interface MeasuredRemainderRabbitOutbound {
     fun findPage(filter: MeasuredRemainderFilter, pageRequest: DomainPageRequest): DomainPage<MeasuredRemainder>?
     fun update(measuredRemainder: MeasuredRemainder, userLogin: String): Result<MeasuredRemainder>
     fun inventoryMeasuredRemainder(inventoriedMeasuredRemainders: InventoriedMeasuredRemainders)
+    fun findBinCodesByWarehouseCode(warehouseCode: String): List<String>?
 }
